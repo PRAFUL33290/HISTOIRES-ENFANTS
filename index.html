@@ -70,15 +70,24 @@
       border-radius: 8px;
       color: #fff;
     }
-    .section-perso  h2 { background: #ff6eb4; }
-    .section-objets h2 { background: #ffaa00; }
-    .section-decor  h2 { background: #00c8ff; }
+    .section-gentils h2 { background: #22c55e; }
+    .section-mechants h2 { background: #b91c1c; }
+    .section-objets  h2 { background: #ffaa00; }
+    .section-decor   h2 { background: #00c8ff; }
 
+    /* Grille défilante horizontalement */
     .element-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, auto);
+      grid-auto-flow: column;
+      grid-auto-columns: 54px;
       gap: 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 6px;
     }
+    .element-grid::-webkit-scrollbar { height: 5px; }
+    .element-grid::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
     /* Chaque élément de la barre latérale */
     .sidebar-item {
@@ -300,15 +309,98 @@
     /* ── Scrollbar ──────────────────────────────────────── */
     #sidebar::-webkit-scrollbar { width: 5px; }
     #sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+    /* ── Affichage du prénom dans le header ─────────────── */
+    #child-name-display {
+      margin-left: auto;
+      background: rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: .95rem;
+      font-weight: 900;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    /* ── Modal de bienvenue ─────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-box {
+      background: linear-gradient(135deg, #fff9e6 0%, #f0e8ff 100%);
+      border-radius: 28px;
+      padding: 36px 40px;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(0,0,0,.35);
+      max-width: 360px;
+      width: 90%;
+      animation: popIn .35s ease-out;
+    }
+    @keyframes popIn {
+      from { transform: scale(.6) rotate(-4deg); opacity: 0; }
+      to   { transform: scale(1)  rotate(0deg);  opacity: 1; }
+    }
+    .modal-emoji { font-size: 3.2rem; margin-bottom: 6px; }
+    .modal-box h2 { font-size: 1.7rem; color: #7c3aed; margin-bottom: 8px; }
+    .modal-box p  { font-size: 1.05rem; color: #555; margin-bottom: 18px; }
+    #name-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 3px solid #c4b5fd;
+      font-family: inherit;
+      font-size: 1.15rem;
+      text-align: center;
+      outline: none;
+      margin-bottom: 14px;
+      transition: border-color .2s;
+    }
+    #name-input:focus { border-color: #7c3aed; }
+    #name-input.error { border-color: #ef4444; }
+    #name-submit {
+      background: linear-gradient(90deg, #ff6eb4, #ffaa00);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 11px 0;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: transform .15s, box-shadow .15s;
+    }
+    #name-submit:hover  { transform: scale(1.05); box-shadow: 0 4px 16px rgba(255,110,180,.5); }
+    #name-submit:active { transform: scale(.97); }
   </style>
 </head>
 <body>
+
+<!-- ══ Modal de bienvenue ════════════════════════════════ -->
+<div id="welcome-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-emoji">🌟</div>
+    <h2>Bienvenue !</h2>
+    <p>Comment tu t'appelles ?</p>
+    <input type="text" id="name-input" placeholder="Ton prénom…" maxlength="30" autocomplete="off" />
+    <button id="name-submit">C'est parti&nbsp;! 🚀</button>
+  </div>
+</div>
 
 <!-- ══ En-tête ══════════════════════════════════════════ -->
 <header>
   <span class="stars">⭐</span>
   <h1>Invente ton histoire&nbsp;!</h1>
   <span class="stars delayed">🌟</span>
+  <span id="child-name-display"></span>
 </header>
 
 <!-- ══ Corps principal ══════════════════════════════════ -->
@@ -317,19 +409,50 @@
   <!-- ── Barre latérale ──────────────────────────────── -->
   <aside id="sidebar">
 
-    <!-- Personnages -->
-    <div class="section-perso">
-      <h2>👦 Personnages</h2>
+    <!-- Personnages gentils -->
+    <div class="section-gentils">
+      <h2>😇 Gentils</h2>
       <div class="element-grid">
         <div class="sidebar-item" draggable="true" data-emoji="👦" title="Garçon">👦</div>
         <div class="sidebar-item" draggable="true" data-emoji="👧" title="Fille">👧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👸" title="Princesse">👸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤴" title="Prince">🤴</div>
         <div class="sidebar-item" draggable="true" data-emoji="🧙" title="Sorcier">🧙</div>
         <div class="sidebar-item" draggable="true" data-emoji="🧚" title="Fée">🧚</div>
         <div class="sidebar-item" draggable="true" data-emoji="🦸" title="Super-héros">🦸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐉" title="Dragon">🐉</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦁" title="Lion">🦁</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐺" title="Loup">🐺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧝" title="Elfe">🧝</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧜" title="Sirène">🧜</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👼" title="Ange">👼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦄" title="Licorne">🦄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐻" title="Ours">🐻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐰" title="Lapin">🐰</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦊" title="Renard">🦊</div>
         <div class="sidebar-item" draggable="true" data-emoji="🐸" title="Grenouille">🐸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦁" title="Lion">🦁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐴" title="Cheval">🐴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🚀" title="Astronaute">🧑‍🚀</div>
+      </div>
+    </div>
+
+    <!-- Personnages méchants -->
+    <div class="section-mechants">
+      <h2>😈 Très Méchants</h2>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🧟" title="Zombie">🧟</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧛" title="Vampire">🧛</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👹" title="Ogre">👹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👺" title="Gobelin">👺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦹" title="Vilain">🦹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="😈" title="Démon">😈</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💀" title="Squelette">💀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👻" title="Fantôme">👻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐍" title="Serpent">🐍</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕷️" title="Araignée">🕷️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦂" title="Scorpion">🦂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐲" title="Dragon maléfique">🐲</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏴‍☠️" title="Pirate">🏴‍☠️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐺" title="Loup">🐺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦇" title="Chauve-souris">🦇</div>
       </div>
     </div>
 
@@ -346,6 +469,21 @@
         <div class="sidebar-item" draggable="true" data-emoji="🕯️" title="Bougie">🕯️</div>
         <div class="sidebar-item" draggable="true" data-emoji="🗺️" title="Carte">🗺️</div>
         <div class="sidebar-item" draggable="true" data-emoji="🍎" title="Pomme">🍎</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔑" title="Clé">🔑</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧪" title="Potion">🧪</div>
+        <div class="sidebar-item" draggable="true" data-emoji="📜" title="Parchemin">📜</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏹" title="Arc">🏹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🛡️" title="Bouclier">🛡️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔮" title="Boule de cristal">🔮</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪙" title="Pièce d'or">🪙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎁" title="Cadeau">🎁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧸" title="Nounours">🧸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎭" title="Masque">🎭</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪖" title="Casque">🪖</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💣" title="Bombe">💣</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪤" title="Piège">🪤</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧿" title="Amulette">🧿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏆" title="Trophée">🏆</div>
       </div>
     </div>
 
@@ -362,6 +500,21 @@
         <div class="sidebar-item" draggable="true" data-emoji="🌙" title="Lune">🌙</div>
         <div class="sidebar-item" draggable="true" data-emoji="🌈" title="Arc-en-ciel">🌈</div>
         <div class="sidebar-item" draggable="true" data-emoji="🔥" title="Feu">🔥</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌋" title="Volcan">🌋</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏜️" title="Désert">🏜️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌴" title="Palmier">🌴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕸️" title="Toile d'araignée">🕸️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪨" title="Rocher">🪨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚡" title="Éclair">⚡</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌪️" title="Tornade">🌪️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏚️" title="Maison hantée">🏚️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗼" title="Tour">🗼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌿" title="Plantes">🌿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪦" title="Tombe">🪦</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌑" title="Lune noire">🌑</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌫️" title="Brouillard">🌫️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧊" title="Glace">🧊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌉" title="Pont">🌉</div>
       </div>
     </div>
 
@@ -378,6 +531,11 @@
         <button class="phrase-btn" data-phrase="Grâce à…">Grâce à…</button>
         <button class="phrase-btn" data-phrase="Finalement…">Finalement…</button>
         <button class="phrase-btn" data-phrase="Depuis ce jour…">Depuis ce jour…</button>
+        <button class="phrase-btn" data-phrase="Le méchant dit :">Le méchant dit :</button>
+        <button class="phrase-btn" data-phrase="Le héros cria :">Le héros cria :</button>
+        <button class="phrase-btn" data-phrase="Heureusement…">Heureusement…</button>
+        <button class="phrase-btn" data-phrase="À l'aide !">À l'aide !</button>
+        <button class="phrase-btn" data-phrase="Jamais je ne…">Jamais je ne…</button>
       </div>
 
       <!-- Champ texte libre -->
@@ -645,6 +803,46 @@ document.getElementById('btn-clear').addEventListener('click', () => {
     zCounter = 10;
   }
 });
+
+/* ── 8. Session individuelle — prénom de l'enfant ─────── */
+const welcomeModal  = document.getElementById('welcome-modal');
+const nameInput     = document.getElementById('name-input');
+const nameSubmit    = document.getElementById('name-submit');
+const nameDisplay   = document.getElementById('child-name-display');
+
+function applyChildName(name) {
+  sessionStorage.setItem('childName', name);
+  nameDisplay.textContent = '👤 ' + name;
+  welcomeModal.classList.add('hidden');
+}
+
+function initSession() {
+  const savedName = sessionStorage.getItem('childName');
+  if (savedName) {
+    applyChildName(savedName);
+  } else {
+    welcomeModal.classList.remove('hidden');
+    // Focus retardé pour les animations
+    setTimeout(() => nameInput.focus(), 100); // laisser le temps à l'animation popIn de démarrer
+  }
+}
+
+nameSubmit.addEventListener('click', () => {
+  const name = nameInput.value.trim();
+  if (!name) {
+    nameInput.classList.add('error');
+    nameInput.focus();
+    return;
+  }
+  applyChildName(name);
+});
+
+nameInput.addEventListener('keydown', e => {
+  nameInput.classList.remove('error');
+  if (e.key === 'Enter') nameSubmit.click();
+});
+
+initSession();
 </script>
 </body>
 </html>
