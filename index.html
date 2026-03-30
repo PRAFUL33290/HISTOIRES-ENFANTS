@@ -542,7 +542,7 @@
         <button class="phrase-btn" data-phrase="Finalement…">Finalement…</button>
         <button class="phrase-btn" data-phrase="Et ils vécurent heureux !">Et ils vécurent heureux !</button>
       </div>
-      <textarea id="text-input" rows="2" placeholder="Écris ici…" maxlength="120"></textarea>
+      <textarea id="text-input" rows="2" placeholder="Écris ici…" maxlength="120" aria-label="Écris ton texte ici"></textarea>
       <button id="btn-add-text">➕ Ajouter</button>
     </div>
   </aside>
@@ -588,7 +588,7 @@ function renderPageNav() {
     w.className = 'page-tab-wrapper';
     const tab = document.createElement('button');
     tab.className = 'page-tab' + (i === currentPage ? ' active' : '');
-    tab.textContent = '\u{1F4C4} ' + (i + 1);
+    tab.textContent = '📄 ' + (i + 1);
     tab.addEventListener('click', () => switchPage(i));
     w.appendChild(tab);
     if (pages.length > 1) {
@@ -757,11 +757,11 @@ function appendDeleteBtn(el) {
 function appendLockBtn(el) {
   const btn = document.createElement('button');
   btn.className = 'lock-btn';
-  btn.textContent = el.classList.contains('locked') ? '\uD83D\uDD12' : '\uD83D\uDD13';
+  btn.textContent = el.classList.contains('locked') ? '🔒' : '🔓';
   btn.title = 'Verrouiller / déverrouiller';
   btn.addEventListener('click', e => {
     e.stopPropagation(); el.classList.toggle('locked');
-    btn.textContent = el.classList.contains('locked') ? '\uD83D\uDD12' : '\uD83D\uDD13';
+    btn.textContent = el.classList.contains('locked') ? '🔒' : '🔓';
     autosave();
   });
   el.appendChild(btn);
@@ -861,7 +861,7 @@ const nameDisplay  = document.getElementById('child-name-display');
 
 function applyChildName(n) {
   sessionStorage.setItem(STORE_KEY + '_name', n);
-  nameDisplay.textContent = '\uD83D\uDC64 ' + n;
+  nameDisplay.textContent = '👤 ' + n;
   welcomeModal.classList.add('hidden');
 }
 nameSubmit.addEventListener('click', () => {
