@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invente ton histoire 🌟</title>
+  <style>
+    /* ── Typographie & reset ────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffe0f0 0%, #e0f0ff 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── En-tête ────────────────────────────────────────── */
+    header {
+      background: linear-gradient(90deg, #ff6eb4, #ffaa00, #00c8ff);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      flex-shrink: 0;
+    }
+    header h1 {
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,.3);
+      letter-spacing: 1px;
+    }
+    header .stars { font-size: 1.4rem; animation: spin 4s linear infinite; display: inline-block; }
+    header .stars.delayed { animation-delay: -2s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Corps principal ────────────────────────────────── */
+    main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      padding: 10px;
+      gap: 10px;
+    }
+
+    /* ── Barre latérale ─────────────────────────────────── */
+    #sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,.85);
+      border-radius: 18px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+
+    #sidebar h2 {
+      font-size: .85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #fff;
+    }
+    .section-perso  h2 { background: #ff6eb4; }
+    .section-objets h2 { background: #ffaa00; }
+    .section-decor  h2 { background: #00c8ff; }
+
+    .element-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    /* Chaque élément de la barre latérale */
+    .sidebar-item {
+      font-size: 1.8rem;
+      text-align: center;
+      cursor: grab;
+      background: #f9f9f9;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 4px 2px;
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+      user-select: none;
+      line-height: 1.3;
+    }
+    .sidebar-item:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      border-color: #ff6eb4;
+    }
+    .sidebar-item:active { cursor: grabbing; transform: scale(1.05); }
+
+    /* ── Zone de texte / phrases ────────────────────────── */
+    .section-texte {
+      border-top: 2px dashed #ccc;
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .section-texte h2 {
+      font-size: .85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7c3aed;
+    }
+
+    #text-input {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 2px solid #c4b5fd;
+      font-family: inherit;
+      font-size: .85rem;
+      resize: none;
+      outline: none;
+      transition: border-color .2s;
+    }
+    #text-input:focus { border-color: #7c3aed; }
+
+    #btn-add-text {
+      background: linear-gradient(90deg, #7c3aed, #a855f7);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 7px 10px;
+      font-family: inherit;
+      font-size: .85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+    #btn-add-text:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(124,58,237,.4); }
+    #btn-add-text:active { transform: scale(.97); }
+
+    /* Phrases pré-faites */
+    .phrases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .phrase-btn {
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      border-radius: 10px;
+      padding: 5px 8px;
+      font-family: inherit;
+      font-size: .78rem;
+      font-weight: 700;
+      color: #92400e;
+      cursor: pointer;
+      text-align: left;
+      transition: background .15s, transform .15s;
+    }
+    .phrase-btn:hover { background: #fde68a; transform: scale(1.03); }
+    .phrase-btn:active { transform: scale(.97); }
+
+    /* ── Scène principale ───────────────────────────────── */
+    #scene-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #scene {
+      flex: 1;
+      background: linear-gradient(160deg, #fff9e6 0%, #e8f5ff 100%);
+      border: 4px dashed #ffaa00;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 30px rgba(255,170,0,.1), 0 4px 16px rgba(0,0,0,.12);
+      /* La scène est FIXE — seuls les éléments bougent */
+    }
+
+    /* Décoration intérieure de la scène */
+    #scene::before {
+      content: '✨ Ta scène ✨';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: rgba(200,160,0,.25);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* ── Éléments placés sur la scène ───────────────────── */
+    .scene-element {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      font-size: 2.8rem;
+      line-height: 1;
+      transition: filter .1s;
+      touch-action: none;
+    }
+    .scene-element:hover .delete-btn { opacity: 1; }
+    .scene-element.dragging {
+      cursor: grabbing;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.35));
+      z-index: 1000;
+      transform: scale(1.1) rotate(4deg);
+      transition: none;
+    }
+
+    /* Bouton supprimer */
+    .delete-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: .75rem;
+      font-weight: 900;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .2s, transform .15s;
+      padding: 0;
+      z-index: 10;
+    }
+    .delete-btn:hover { transform: scale(1.2); }
+    .scene-element:hover .delete-btn,
+    .text-block:hover  .delete-btn { opacity: 1; }
+
+    /* ── Blocs de texte ─────────────────────────────────── */
+    .text-block {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      background: rgba(255,255,255,.92);
+      border: 3px solid #a855f7;
+      border-radius: 12px;
+      padding: 6px 28px 6px 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #4c1d95;
+      box-shadow: 0 4px 12px rgba(168,85,247,.25);
+      max-width: 220px;
+      word-break: break-word;
+      white-space: pre-wrap;
+      touch-action: none;
+      transition: filter .1s;
+    }
+    .text-block.dragging {
+      cursor: grabbing;
+      filter: drop-shadow(0 6px 14px rgba(168,85,247,.45));
+      z-index: 1000;
+      transform: scale(1.05) rotate(-2deg);
+      transition: none;
+    }
+
+    /* ── Boutons d'action (barre basse) ─────────────────── */
+    #scene-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+    .action-btn {
+      background: linear-gradient(90deg, #ff6eb4, #ffaa00);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: .85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,.2);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .action-btn:hover { transform: scale(1.05); box-shadow: 0 5px 14px rgba(0,0,0,.25); }
+    .action-btn:active { transform: scale(.97); }
+    .action-btn.danger {
+      background: linear-gradient(90deg, #ef4444, #f97316);
+    }
+
+    /* ── Scrollbar ──────────────────────────────────────── */
+    #sidebar::-webkit-scrollbar { width: 5px; }
+    #sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- ══ En-tête ══════════════════════════════════════════ -->
+<header>
+  <span class="stars">⭐</span>
+  <h1>Invente ton histoire&nbsp;!</h1>
+  <span class="stars delayed">🌟</span>
+</header>
+
+<!-- ══ Corps principal ══════════════════════════════════ -->
+<main>
+
+  <!-- ── Barre latérale ──────────────────────────────── -->
+  <aside id="sidebar">
+
+    <!-- Personnages -->
+    <div class="section-perso">
+      <h2>👦 Personnages</h2>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="👦" title="Garçon">👦</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👧" title="Fille">👧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧙" title="Sorcier">🧙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧚" title="Fée">🧚</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦸" title="Super-héros">🦸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐉" title="Dragon">🐉</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦁" title="Lion">🦁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐺" title="Loup">🐺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐸" title="Grenouille">🐸</div>
+      </div>
+    </div>
+
+    <!-- Objets -->
+    <div class="section-objets">
+      <h2>🏠 Objets</h2>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🏠" title="Maison">🏠</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏰" title="Château">🏰</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚔️" title="Épée">⚔️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪄" title="Baguette">🪄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💎" title="Trésor">💎</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎒" title="Sac">🎒</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕯️" title="Bougie">🕯️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗺️" title="Carte">🗺️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍎" title="Pomme">🍎</div>
+      </div>
+    </div>
+
+    <!-- Décors -->
+    <div class="section-decor">
+      <h2>🌲 Décors</h2>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🌲" title="Arbre">🌲</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌊" title="Mer">🌊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏔️" title="Montagne">🏔️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌸" title="Fleur">🌸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="☁️" title="Nuage">☁️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌞" title="Soleil">🌞</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌙" title="Lune">🌙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌈" title="Arc-en-ciel">🌈</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔥" title="Feu">🔥</div>
+      </div>
+    </div>
+
+    <!-- Texte -->
+    <div class="section-texte">
+      <h2>✏️ Texte</h2>
+
+      <!-- Phrases pré-faites -->
+      <div class="phrases-grid" id="phrases">
+        <button class="phrase-btn" data-phrase="Il était une fois…">Il était une fois…</button>
+        <button class="phrase-btn" data-phrase="Un jour…">Un jour…</button>
+        <button class="phrase-btn" data-phrase="Soudain…">Soudain…</button>
+        <button class="phrase-btn" data-phrase="Ensuite…">Ensuite…</button>
+        <button class="phrase-btn" data-phrase="Grâce à…">Grâce à…</button>
+        <button class="phrase-btn" data-phrase="Finalement…">Finalement…</button>
+        <button class="phrase-btn" data-phrase="Depuis ce jour…">Depuis ce jour…</button>
+      </div>
+
+      <!-- Champ texte libre -->
+      <textarea id="text-input" rows="2" placeholder="Écris ton texte…"></textarea>
+      <button id="btn-add-text">➕ Ajouter le texte</button>
+    </div>
+
+  </aside>
+
+  <!-- ── Zone scène + boutons ─────────────────────────── -->
+  <div id="scene-wrapper">
+    <!-- La scène est FIXE ; les éléments bougent à l'intérieur -->
+    <div id="scene" aria-label="Scène de l'histoire"></div>
+
+    <div id="scene-actions">
+      <button class="action-btn danger" id="btn-clear">🗑️ Tout effacer</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   INVENTE TON HISTOIRE — JavaScript
+   ══════════════════════════════════════════════════════════ */
+
+const scene = document.getElementById('scene');
+
+// Constantes de positionnement
+const EMOJI_DROP_OFFSET     = 20;  // décalage centrage de l'emoji sous le curseur
+const TEXT_BLOCK_MIN_OFFSET = 40;  // position min d'un nouveau bloc texte
+const TEXT_BLOCK_POS_RANGE  = 200; // amplitude de la position aléatoire
+const DEFAULT_ELEMENT_SIZE  = 48;  // taille de repli (px) quand offsetWidth/Height vaut 0
+
+/* ── 1. Drag depuis la barre latérale ─────────────────── */
+
+// Mémorise quel emoji est en cours de glisser
+let draggedEmoji = null;
+
+document.querySelectorAll('.sidebar-item').forEach(item => {
+  item.addEventListener('dragstart', e => {
+    draggedEmoji = item.dataset.emoji;
+    e.dataTransfer.effectAllowed = 'copy';
+    // Petite animation de départ
+    item.style.opacity = '.5';
+  });
+  item.addEventListener('dragend', () => {
+    item.style.opacity = '';
+    draggedEmoji = null;
+  });
+});
+
+// La scène accepte les dépôts
+scene.addEventListener('dragover', e => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+});
+
+scene.addEventListener('drop', e => {
+  e.preventDefault();
+  if (!draggedEmoji) return;
+
+  const rect = scene.getBoundingClientRect();
+  // Position relative à la scène
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  createEmojiElement(draggedEmoji, x - EMOJI_DROP_OFFSET, y - EMOJI_DROP_OFFSET);
+});
+
+/* ── 2. Création d'un élément emoji sur la scène ──────── */
+function createEmojiElement(emoji, x, y) {
+  const el = document.createElement('div');
+  el.className = 'scene-element';
+  el.textContent = emoji;
+
+  // Bouton supprimer
+  const del = document.createElement('button');
+  del.className = 'delete-btn';
+  del.textContent = '✕';
+  del.title = 'Supprimer';
+  del.addEventListener('click', e => {
+    e.stopPropagation();
+    el.remove();
+  });
+  el.appendChild(del);
+
+  // Position initiale (clampée dans la scène)
+  positionElement(el, x, y);
+  scene.appendChild(el);
+
+  // Rendre déplaçable
+  makeDraggable(el);
+
+  // Animation d'apparition
+  el.animate([
+    { transform: 'scale(0) rotate(-30deg)', opacity: 0 },
+    { transform: 'scale(1.15) rotate(5deg)', opacity: 1 },
+    { transform: 'scale(1) rotate(0deg)',   opacity: 1 }
+  ], { duration: 300, easing: 'ease-out', fill: 'forwards' });
+}
+
+/* ── 3. Blocs de texte ────────────────────────────────── */
+const textInput   = document.getElementById('text-input');
+const btnAddText  = document.getElementById('btn-add-text');
+
+btnAddText.addEventListener('click', addTextBlock);
+textInput.addEventListener('keydown', e => {
+  // Ctrl+Entrée pour ajouter
+  if (e.key === 'Enter' && e.ctrlKey) addTextBlock();
+});
+
+function addTextBlock() {
+  const txt = textInput.value.trim();
+  if (!txt) return;
+
+  createTextBlock(txt, TEXT_BLOCK_MIN_OFFSET + Math.random() * TEXT_BLOCK_POS_RANGE,
+                      TEXT_BLOCK_MIN_OFFSET + Math.random() * TEXT_BLOCK_POS_RANGE);
+  textInput.value = '';
+  textInput.focus();
+}
+
+function createTextBlock(text, x, y) {
+  const el = document.createElement('div');
+  el.className = 'text-block';
+  el.textContent = text;
+
+  // Bouton supprimer
+  const del = document.createElement('button');
+  del.className = 'delete-btn';
+  del.textContent = '✕';
+  del.title = 'Supprimer';
+  del.addEventListener('click', e => {
+    e.stopPropagation();
+    el.remove();
+  });
+  el.appendChild(del);
+
+  positionElement(el, x, y);
+  scene.appendChild(el);
+  makeDraggable(el);
+
+  // Animation d'apparition
+  el.animate([
+    { transform: 'scale(0) rotate(5deg)', opacity: 0 },
+    { transform: 'scale(1.08) rotate(-2deg)', opacity: 1 },
+    { transform: 'scale(1) rotate(0deg)',  opacity: 1 }
+  ], { duration: 280, easing: 'ease-out', fill: 'forwards' });
+}
+
+/* ── 4. Phrases pré-faites ────────────────────────────── */
+document.querySelectorAll('.phrase-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remplir le champ texte avec la phrase
+    textInput.value = btn.dataset.phrase + ' ';
+    textInput.focus();
+    // Placer le curseur en fin de texte
+    const len = textInput.value.length;
+    textInput.setSelectionRange(len, len);
+  });
+});
+
+/* ── 5. Drag & drop personnalisé (mousedown/move/up) ──── */
+function makeDraggable(el) {
+  let startX, startY, startLeft, startTop;
+  let isDragging = false;
+
+  el.addEventListener('mousedown', onMouseDown);
+  el.addEventListener('touchstart', onTouchStart, { passive: false });
+
+  /* -- Souris -- */
+  function onMouseDown(e) {
+    if (e.target.classList.contains('delete-btn')) return;
+    e.preventDefault();
+    beginDrag(e.clientX, e.clientY);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    moveTo(e.clientX, e.clientY);
+  }
+
+  function onMouseUp() {
+    endDrag();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  /* -- Tactile -- */
+  function onTouchStart(e) {
+    if (e.target.classList.contains('delete-btn')) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    beginDrag(t.clientX, t.clientY);
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd);
+  }
+
+  function onTouchMove(e) {
+    e.preventDefault();
+    const t = e.touches[0];
+    moveTo(t.clientX, t.clientY);
+  }
+
+  function onTouchEnd() {
+    endDrag();
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onTouchEnd);
+  }
+
+  /* -- Logique commune -- */
+  function beginDrag(cx, cy) {
+    isDragging = true;
+    el.classList.add('dragging');
+    // Élever au-dessus des autres éléments
+    el.style.zIndex = nextZIndex();
+
+    const rect = el.getBoundingClientRect();
+    startX    = cx;
+    startY    = cy;
+    startLeft = parseInt(el.style.left, 10) || 0;
+    startTop  = parseInt(el.style.top,  10) || 0;
+  }
+
+  function moveTo(cx, cy) {
+    if (!isDragging) return;
+    const dx = cx - startX;
+    const dy = cy - startY;
+    positionElement(el, startLeft + dx, startTop + dy);
+  }
+
+  function endDrag() {
+    isDragging = false;
+    el.classList.remove('dragging');
+  }
+}
+
+/* ── 6. Utilitaires ───────────────────────────────────── */
+
+// Compteur pour l'ordre z des éléments
+let zCounter = 10;
+function nextZIndex() { return ++zCounter; }
+
+// Place un élément en le gardant dans les limites de la scène
+function positionElement(el, x, y) {
+  const sceneW = scene.offsetWidth;
+  const sceneH = scene.offsetHeight;
+  const elW    = el.offsetWidth  || DEFAULT_ELEMENT_SIZE;
+  const elH    = el.offsetHeight || DEFAULT_ELEMENT_SIZE;
+
+  const clampedX = Math.max(0, Math.min(x, sceneW - elW));
+  const clampedY = Math.max(0, Math.min(y, sceneH - elH));
+
+  el.style.left = clampedX + 'px';
+  el.style.top  = clampedY + 'px';
+}
+
+/* ── 7. Bouton « Tout effacer » ───────────────────────── */
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (confirm('Veux-tu vraiment effacer toute la scène ?')) {
+    // Supprimer tous les éléments sauf le pseudo-texte ::before
+    scene.querySelectorAll('.scene-element, .text-block').forEach(el => el.remove());
+    zCounter = 10;
+  }
+});
+</script>
+</body>
+</html>
