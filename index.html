@@ -3,846 +3,891 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invente ton histoire 🌟</title>
+  <title>Invente Ton Histoire 📖✨</title>
   <style>
-    /* ── Typographie & reset ────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', cursive, sans-serif;
-      background: linear-gradient(135deg, #ffe0f0 0%, #e0f0ff 100%);
+      background: #ffeaa7;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
-
-    /* ── En-tête ────────────────────────────────────────── */
     header {
-      background: linear-gradient(90deg, #ff6eb4, #ffaa00, #00c8ff);
-      padding: 10px 20px;
+      background: #6c5ce7;
+      padding: 8px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      gap: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
       flex-shrink: 0;
     }
-    header h1 {
-      font-size: 1.7rem;
-      font-weight: 900;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0,0,0,.3);
-      letter-spacing: 1px;
-    }
-    header .stars { font-size: 1.4rem; animation: spin 4s linear infinite; display: inline-block; }
-    header .stars.delayed { animation-delay: -2s; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Corps principal ────────────────────────────────── */
-    main {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-      padding: 10px;
-      gap: 10px;
-    }
-
-    /* ── Barre latérale ─────────────────────────────────── */
-    #sidebar {
-      width: 200px;
-      flex-shrink: 0;
-      background: rgba(255,255,255,.85);
-      border-radius: 18px;
-      padding: 12px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow-y: auto;
-      box-shadow: 0 4px 16px rgba(0,0,0,.15);
-    }
-
-    #sidebar h2 {
-      font-size: .85rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 4px 8px;
-      border-radius: 8px;
-      color: #fff;
-    }
-    .section-gentils h2 { background: #22c55e; }
-    .section-mechants h2 { background: #b91c1c; }
-    .section-objets  h2 { background: #ffaa00; }
-    .section-decor   h2 { background: #00c8ff; }
-
-    /* Grille défilante horizontalement */
-    .element-grid {
-      display: grid;
-      grid-template-rows: repeat(3, auto);
-      grid-auto-flow: column;
-      grid-auto-columns: 54px;
-      gap: 6px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding-bottom: 6px;
-    }
-    .element-grid::-webkit-scrollbar { height: 5px; }
-    .element-grid::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
-    /* Chaque élément de la barre latérale */
-    .sidebar-item {
-      font-size: 1.8rem;
-      text-align: center;
-      cursor: grab;
-      background: #f9f9f9;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      padding: 4px 2px;
-      transition: transform .15s, box-shadow .15s, border-color .15s;
-      user-select: none;
-      line-height: 1.3;
-    }
-    .sidebar-item:hover {
-      transform: scale(1.15);
-      box-shadow: 0 4px 12px rgba(0,0,0,.2);
-      border-color: #ff6eb4;
-    }
+    header h1 { font-size: 1.5rem; font-weight: 900; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,.3); letter-spacing: 1px; white-space: nowrap; }
+    header .quote { font-size: .8rem; color: rgba(255,255,255,.85); font-style: italic; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #child-name-display { background: rgba(255,255,255,.2); border-radius: 20px; padding: 4px 12px; font-size: .9rem; font-weight: 900; color: #fff; white-space: nowrap; flex-shrink: 0; }
+    #page-nav { background: rgba(108,92,231,.1); border-bottom: 2px solid rgba(108,92,231,.2); display: flex; align-items: center; gap: 6px; padding: 5px 12px; overflow-x: auto; flex-shrink: 0; }
+    #page-nav::-webkit-scrollbar { height: 4px; }
+    #page-nav::-webkit-scrollbar-thumb { background: #a29bfe; border-radius: 4px; }
+    .page-tab-wrapper { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+    .page-tab { background: #fff; border: 2px solid #a29bfe; border-radius: 8px 8px 0 0; padding: 4px 11px; font-family: inherit; font-size: .8rem; font-weight: 700; color: #6c5ce7; cursor: pointer; transition: background .15s, color .15s; white-space: nowrap; }
+    .page-tab.active { background: #6c5ce7; color: #fff; border-color: #6c5ce7; }
+    .page-tab:hover:not(.active) { background: #f0ecff; }
+    .page-del-btn { background: #e17055; color: #fff; border: none; border-radius: 50%; width: 17px; height: 17px; font-size: .6rem; font-weight: 900; line-height: 17px; text-align: center; cursor: pointer; padding: 0; flex-shrink: 0; transition: transform .15s; }
+    .page-del-btn:hover { transform: scale(1.25); }
+    #btn-add-page { background: #00b894; color: #fff; border: none; border-radius: 8px; padding: 5px 11px; font-family: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform .15s, box-shadow .15s; }
+    #btn-add-page:hover { transform: scale(1.05); box-shadow: 0 3px 8px rgba(0,184,148,.4); }
+    #btn-add-page:disabled { opacity: .45; cursor: default; transform: none; box-shadow: none; }
+    main { display: flex; flex: 1; overflow: hidden; padding: 10px; gap: 10px; }
+    #sidebar { width: 215px; flex-shrink: 0; background: rgba(255,255,255,.95); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+    #sidebar-tabs { display: flex; border-bottom: 2px solid #e0e0e0; flex-shrink: 0; }
+    .sidebar-tab-btn { flex: 1; border: none; background: #f5f3ff; font-family: inherit; font-size: .72rem; font-weight: 900; color: #6c5ce7; padding: 9px 3px; cursor: pointer; transition: background .15s, color .15s; letter-spacing: .4px; }
+    .sidebar-tab-btn:first-child { border-radius: 14px 0 0 0; }
+    .sidebar-tab-btn:last-child  { border-radius: 0 14px 0 0; }
+    .sidebar-tab-btn.active { background: #6c5ce7; color: #fff; }
+    .sidebar-tab-btn:hover:not(.active) { background: #ede9fe; }
+    .sidebar-tab-content { display: none; flex: 1; overflow-y: auto; padding: 8px 7px; }
+    .sidebar-tab-content.active { display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-tab-content::-webkit-scrollbar { width: 5px; }
+    .sidebar-tab-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    .cat-label { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .8px; color: #fff; padding: 3px 7px; border-radius: 6px; margin-bottom: 1px; }
+    .cat-fantastique { background: #a29bfe; }
+    .cat-mechant     { background: #d63031; }
+    .cat-gentil      { background: #00b894; }
+    .cat-artiste     { background: #e17055; }
+    .cat-aventurier  { background: #0984e3; }
+    .cat-age         { background: #fdcb6e; color: #5d4037; }
+    .cat-special     { background: #fd79a8; }
+    .cat-animaux     { background: #00cec9; color: #2d3436; }
+    .cat-armes       { background: #636e72; }
+    .cat-magie       { background: #a29bfe; }
+    .cat-tresor      { background: #fdcb6e; color: #5d4037; }
+    .cat-musique     { background: #fd79a8; }
+    .cat-vehicules   { background: #0984e3; }
+    .cat-nourriture  { background: #e17055; }
+    .cat-divers      { background: #00b894; }
+    .cat-batiments   { background: #636e72; }
+    .cat-paysages    { background: #0984e3; }
+    .cat-nature      { background: #00b894; }
+    .cat-ciel        { background: #a29bfe; }
+    .cat-meteo       { background: #74b9ff; color: #2d3436; }
+    .element-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 3px; }
+    .sidebar-item { font-size: 1.5rem; text-align: center; cursor: grab; background: #fafafa; border: 2px solid #e8e8e8; border-radius: 7px; padding: 2px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: transform .15s, box-shadow .15s, border-color .15s; user-select: none; line-height: 1; flex-shrink: 0; }
+    .sidebar-item:hover { transform: scale(1.2); box-shadow: 0 4px 12px rgba(0,0,0,.2); border-color: #6c5ce7; }
     .sidebar-item:active { cursor: grabbing; transform: scale(1.05); }
-
-    /* ── Zone de texte / phrases ────────────────────────── */
-    .section-texte {
-      border-top: 2px dashed #ccc;
-      padding-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .section-texte h2 {
-      font-size: .85rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #7c3aed;
-    }
-
-    #text-input {
-      width: 100%;
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 2px solid #c4b5fd;
-      font-family: inherit;
-      font-size: .85rem;
-      resize: none;
-      outline: none;
-      transition: border-color .2s;
-    }
-    #text-input:focus { border-color: #7c3aed; }
-
-    #btn-add-text {
-      background: linear-gradient(90deg, #7c3aed, #a855f7);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 7px 10px;
-      font-family: inherit;
-      font-size: .85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
-    }
-    #btn-add-text:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(124,58,237,.4); }
-    #btn-add-text:active { transform: scale(.97); }
-
-    /* Phrases pré-faites */
-    .phrases-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .phrase-btn {
-      background: #fef3c7;
-      border: 2px solid #fbbf24;
-      border-radius: 10px;
-      padding: 5px 8px;
-      font-family: inherit;
-      font-size: .78rem;
-      font-weight: 700;
-      color: #92400e;
-      cursor: pointer;
-      text-align: left;
-      transition: background .15s, transform .15s;
-    }
-    .phrase-btn:hover { background: #fde68a; transform: scale(1.03); }
+    #text-section { flex-shrink: 0; border-top: 2px dashed #d0d0d0; padding: 8px 7px 10px; display: flex; flex-direction: column; gap: 5px; background: rgba(255,255,255,.98); }
+    #text-section h3 { font-size: .75rem; font-weight: 900; text-transform: uppercase; letter-spacing: .8px; color: #6c5ce7; }
+    .phrases-grid { display: flex; flex-direction: column; gap: 3px; }
+    .phrase-btn { background: #fef3c7; border: 2px solid #fbbf24; border-radius: 7px; padding: 4px 7px; font-family: inherit; font-size: .7rem; font-weight: 700; color: #92400e; cursor: pointer; text-align: left; transition: background .15s, transform .15s; }
+    .phrase-btn:hover { background: #fde68a; transform: scale(1.02); }
     .phrase-btn:active { transform: scale(.97); }
-
-    /* ── Scène principale ───────────────────────────────── */
-    #scene-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    #scene {
-      flex: 1;
-      background: linear-gradient(160deg, #fff9e6 0%, #e8f5ff 100%);
-      border: 4px dashed #ffaa00;
-      border-radius: 20px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 0 30px rgba(255,170,0,.1), 0 4px 16px rgba(0,0,0,.12);
-      /* La scène est FIXE — seuls les éléments bougent */
-    }
-
-    /* Décoration intérieure de la scène */
-    #scene::before {
-      content: '✨ Ta scène ✨';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: rgba(200,160,0,.25);
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    /* ── Éléments placés sur la scène ───────────────────── */
-    .scene-element {
-      position: absolute;
-      cursor: grab;
-      user-select: none;
-      font-size: 2.8rem;
-      line-height: 1;
-      transition: filter .1s;
-      touch-action: none;
-    }
-    .scene-element:hover .delete-btn { opacity: 1; }
-    .scene-element.dragging {
-      cursor: grabbing;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,.35));
-      z-index: 1000;
-      transform: scale(1.1) rotate(4deg);
-      transition: none;
-    }
-
-    /* Bouton supprimer */
-    .delete-btn {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      width: 22px;
-      height: 22px;
-      background: #ef4444;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      font-size: .75rem;
-      font-weight: 900;
-      line-height: 22px;
-      text-align: center;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity .2s, transform .15s;
-      padding: 0;
-      z-index: 10;
-    }
-    .delete-btn:hover { transform: scale(1.2); }
-    .scene-element:hover .delete-btn,
-    .text-block:hover  .delete-btn { opacity: 1; }
-
-    /* ── Blocs de texte ─────────────────────────────────── */
-    .text-block {
-      position: absolute;
-      cursor: grab;
-      user-select: none;
-      background: rgba(255,255,255,.92);
-      border: 3px solid #a855f7;
-      border-radius: 12px;
-      padding: 6px 28px 6px 10px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #4c1d95;
-      box-shadow: 0 4px 12px rgba(168,85,247,.25);
-      max-width: 220px;
-      word-break: break-word;
-      white-space: pre-wrap;
-      touch-action: none;
-      transition: filter .1s;
-    }
-    .text-block.dragging {
-      cursor: grabbing;
-      filter: drop-shadow(0 6px 14px rgba(168,85,247,.45));
-      z-index: 1000;
-      transform: scale(1.05) rotate(-2deg);
-      transition: none;
-    }
-
-    /* ── Boutons d'action (barre basse) ─────────────────── */
-    #scene-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      flex-shrink: 0;
-    }
-    .action-btn {
-      background: linear-gradient(90deg, #ff6eb4, #ffaa00);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 8px 16px;
-      font-family: inherit;
-      font-size: .85rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0,0,0,.2);
-      transition: transform .15s, box-shadow .15s;
-    }
+    #text-input { width: 100%; padding: 5px 7px; border-radius: 7px; border: 2px solid #74b9ff; font-family: inherit; font-size: .8rem; resize: none; outline: none; transition: border-color .2s; }
+    #text-input:focus { border-color: #6c5ce7; }
+    #btn-add-text { background: #e17055; color: #fff; border: none; border-radius: 9px; padding: 7px; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+    #btn-add-text:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(225,112,85,.4); }
+    #btn-add-text:active { transform: scale(.97); }
+    #scene-wrapper { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    #scene { flex: 1; background-color: #ffeaa7; background-image: radial-gradient(circle, #00b894 1.2px, transparent 1.2px); background-size: 28px 28px; border: 3px solid #6c5ce7; border-radius: 16px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(108,92,231,.06), 0 4px 16px rgba(0,0,0,.12); }
+    #scene::before { content: '\2728 Ta sc\e8ne \2728'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.4rem; font-weight: 700; color: rgba(108,92,231,.15); pointer-events: none; white-space: nowrap; user-select: none; }
+    .scene-element { position: absolute; cursor: grab; user-select: none; display: flex; flex-direction: column; align-items: center; touch-action: none; outline: 2px solid transparent; border-radius: 8px; transition: outline-color .15s, opacity .15s; padding: 2px; }
+    .scene-element:hover { outline-color: rgba(108,92,231,.35); }
+    .scene-element.selected { outline: 3px solid #6c5ce7; outline-offset: 2px; }
+    .scene-element.locked { outline: 3px solid #fd79a8; outline-offset: 2px; opacity: .75; cursor: default; }
+    .scene-element.dragging { cursor: grabbing; filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); z-index: 1000; transform: scale(1.1) rotate(3deg); transition: none; }
+    .elem-emoji { display: block; line-height: 1; pointer-events: none; }
+    .elem-label { font-size: .58rem; font-weight: 700; color: #2d3436; background: rgba(255,255,255,.78); border-radius: 4px; padding: 1px 4px; max-width: 84px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; margin-top: 1px; }
+    .delete-btn { position: absolute; top: -9px; right: -9px; width: 19px; height: 19px; background: #d63031; color: #fff; border: none; border-radius: 50%; font-size: .62rem; font-weight: 900; line-height: 19px; text-align: center; cursor: pointer; opacity: 0; transition: opacity .2s, transform .15s; padding: 0; z-index: 12; }
+    .scene-element:hover .delete-btn, .text-block:hover .delete-btn { opacity: 1; }
+    .delete-btn:hover { transform: scale(1.25); }
+    .lock-btn { position: absolute; top: -9px; left: -9px; width: 19px; height: 19px; background: rgba(255,255,255,.85); border: 2px solid #fd79a8; border-radius: 50%; font-size: .62rem; line-height: 15px; text-align: center; cursor: pointer; opacity: 0; transition: opacity .2s, background .15s; padding: 0; z-index: 12; }
+    .scene-element:hover .lock-btn, .text-block:hover .lock-btn { opacity: 1; }
+    .scene-element.locked .lock-btn, .text-block.locked .lock-btn { opacity: 1; background: #fd79a8; }
+    .lock-btn:hover { background: #fd79a8; }
+    .resize-handle { position: absolute; bottom: -7px; right: -7px; width: 15px; height: 15px; background: #74b9ff; border: 2px solid #fff; border-radius: 3px; cursor: se-resize; opacity: 0; transition: opacity .2s; z-index: 12; }
+    .scene-element:hover .resize-handle { opacity: 1; }
+    .text-block { position: absolute; cursor: grab; user-select: none; background: rgba(255,255,255,.88); border: 2px dashed #74b9ff; border-radius: 10px; padding: 6px 26px 6px 9px; font-family: inherit; font-size: .88rem; font-weight: 700; color: #2d3436; box-shadow: 0 3px 10px rgba(116,185,255,.3); max-width: 280px; word-break: break-word; white-space: pre-wrap; touch-action: none; outline: 2px solid transparent; transition: outline-color .15s, opacity .15s; }
+    .text-block.selected { outline: 3px solid #6c5ce7; outline-offset: 2px; }
+    .text-block.locked { outline: 3px solid #fd79a8; outline-offset: 2px; opacity: .75; cursor: default; }
+    .text-block.dragging { cursor: grabbing; filter: drop-shadow(0 6px 14px rgba(116,185,255,.5)); z-index: 1000; transform: scale(1.04) rotate(-1deg); transition: none; }
+    #scene-actions { display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+    .action-btn { background: linear-gradient(90deg, #6c5ce7, #a29bfe); color: #fff; border: none; border-radius: 12px; padding: 8px 16px; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,.2); transition: transform .15s, box-shadow .15s; }
     .action-btn:hover { transform: scale(1.05); box-shadow: 0 5px 14px rgba(0,0,0,.25); }
     .action-btn:active { transform: scale(.97); }
-    .action-btn.danger {
-      background: linear-gradient(90deg, #ef4444, #f97316);
-    }
-
-    /* ── Scrollbar ──────────────────────────────────────── */
-    #sidebar::-webkit-scrollbar { width: 5px; }
-    #sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
-    /* ── Affichage du prénom dans le header ─────────────── */
-    #child-name-display {
-      margin-left: auto;
-      background: rgba(255,255,255,.25);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: .95rem;
-      font-weight: 900;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    /* ── Modal de bienvenue ─────────────────────────────── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+    .action-btn.danger { background: linear-gradient(90deg, #d63031, #e17055); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
     .modal-overlay.hidden { display: none; }
-    .modal-box {
-      background: linear-gradient(135deg, #fff9e6 0%, #f0e8ff 100%);
-      border-radius: 28px;
-      padding: 36px 40px;
-      text-align: center;
-      box-shadow: 0 16px 48px rgba(0,0,0,.35);
-      max-width: 360px;
-      width: 90%;
-      animation: popIn .35s ease-out;
-    }
-    @keyframes popIn {
-      from { transform: scale(.6) rotate(-4deg); opacity: 0; }
-      to   { transform: scale(1)  rotate(0deg);  opacity: 1; }
-    }
-    .modal-emoji { font-size: 3.2rem; margin-bottom: 6px; }
-    .modal-box h2 { font-size: 1.7rem; color: #7c3aed; margin-bottom: 8px; }
+    .modal-box { background: linear-gradient(135deg, #fff9e6 0%, #f0e8ff 100%); border-radius: 28px; padding: 36px 40px; text-align: center; box-shadow: 0 16px 48px rgba(0,0,0,.35); max-width: 360px; width: 90%; animation: popIn .35s ease-out; }
+    @keyframes popIn { from { transform: scale(.6) rotate(-4deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+    .modal-emoji  { font-size: 3.2rem; margin-bottom: 6px; }
+    .modal-box h2 { font-size: 1.7rem; color: #6c5ce7; margin-bottom: 8px; }
     .modal-box p  { font-size: 1.05rem; color: #555; margin-bottom: 18px; }
-    #name-input {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      border: 3px solid #c4b5fd;
-      font-family: inherit;
-      font-size: 1.15rem;
-      text-align: center;
-      outline: none;
-      margin-bottom: 14px;
-      transition: border-color .2s;
-    }
-    #name-input:focus { border-color: #7c3aed; }
-    #name-input.error { border-color: #ef4444; }
-    #name-submit {
-      background: linear-gradient(90deg, #ff6eb4, #ffaa00);
-      color: #fff;
-      border: none;
-      border-radius: 16px;
-      padding: 11px 0;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      transition: transform .15s, box-shadow .15s;
-    }
-    #name-submit:hover  { transform: scale(1.05); box-shadow: 0 4px 16px rgba(255,110,180,.5); }
+    #name-input { width: 100%; padding: 10px 14px; border-radius: 16px; border: 3px solid #a29bfe; font-family: inherit; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 14px; transition: border-color .2s; }
+    #name-input:focus { border-color: #6c5ce7; }
+    #name-input.error { border-color: #d63031; }
+    #name-submit { background: linear-gradient(90deg, #6c5ce7, #a29bfe); color: #fff; border: none; border-radius: 16px; padding: 11px 0; font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform .15s, box-shadow .15s; }
+    #name-submit:hover  { transform: scale(1.05); box-shadow: 0 4px 16px rgba(108,92,231,.5); }
     #name-submit:active { transform: scale(.97); }
   </style>
 </head>
 <body>
 
-<!-- ══ Modal de bienvenue ════════════════════════════════ -->
+<!-- Modal bienvenue -->
 <div id="welcome-modal" class="modal-overlay">
   <div class="modal-box">
-    <div class="modal-emoji">🌟</div>
-    <h2>Bienvenue !</h2>
-    <p>Comment tu t'appelles ?</p>
+    <div class="modal-emoji">📖</div>
+    <h2>Bienvenue !</h2>
+    <p>Comment tu t’appelles ?</p>
     <input type="text" id="name-input" placeholder="Ton prénom…" maxlength="30" autocomplete="off" />
-    <button id="name-submit">C'est parti&nbsp;! 🚀</button>
+    <button id="name-submit">C’est parti ! 🚀</button>
   </div>
 </div>
 
-<!-- ══ En-tête ══════════════════════════════════════════ -->
+<!-- En-tête -->
 <header>
-  <span class="stars">⭐</span>
-  <h1>Invente ton histoire&nbsp;!</h1>
-  <span class="stars delayed">🌟</span>
+  <h1>📖 Invente Ton Histoire ✨</h1>
+  <span class="quote">💬 Crée ton histoire incroyable ! La meilleure sera réalisée pour de vrai… 🎬</span>
   <span id="child-name-display"></span>
 </header>
 
-<!-- ══ Corps principal ══════════════════════════════════ -->
+<!-- Navigation pages -->
+<div id="page-nav">
+  <button id="btn-add-page">+ Page</button>
+</div>
+
+<!-- Corps principal -->
 <main>
-
-  <!-- ── Barre latérale ──────────────────────────────── -->
   <aside id="sidebar">
+    <div id="sidebar-tabs">
+      <button class="sidebar-tab-btn active" data-tab="persos">🧒 PERSOS</button>
+      <button class="sidebar-tab-btn" data-tab="objets">🎒 OBJETS</button>
+      <button class="sidebar-tab-btn" data-tab="decor">🌳 DÉCOR</button>
+    </div>
 
-    <!-- Personnages gentils -->
-    <div class="section-gentils">
-      <h2>😇 Gentils</h2>
+    <div class="sidebar-tab-content active" id="tab-persos">
+
+      <div class="cat-label cat-fantastique">🔮 Fantastique</div>
       <div class="element-grid">
-        <div class="sidebar-item" draggable="true" data-emoji="👦" title="Garçon">👦</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👧" title="Fille">👧</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👸" title="Princesse">👸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🤴" title="Prince">🤴</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧙" title="Sorcier">🧙</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧚" title="Fée">🧚</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦸" title="Super-héros">🦸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧝" title="Elfe">🧝</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧜" title="Sirène">🧜</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👼" title="Ange">👼</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦄" title="Licorne">🦄</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐻" title="Ours">🐻</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐰" title="Lapin">🐰</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦊" title="Renard">🦊</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐸" title="Grenouille">🐸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦁" title="Lion">🦁</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐴" title="Cheval">🐴</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🚀" title="Astronaute">🧑‍🚀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧙‍♂️" data-label="Magicien">🧙‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧙‍♀️" data-label="Sorcière">🧙‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧝" data-label="Elfe">🧝</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧚" data-label="Fée">🧚</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👼" data-label="Ange">👼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐉" data-label="Dragon">🐉</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦄" data-label="Licorne">🦄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧜" data-label="Sirène">🧜</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧞" data-label="Génie">🧞</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧛" data-label="Vampire">🧛</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎅" data-label="Père Noël">🎅</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤶" data-label="Mère Noël">🤶</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧝‍♂️" data-label="Elfe ♂">🧝‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧝‍♀️" data-label="Elfe ♀">🧝‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧚‍♂️" data-label="Lutin">🧚‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧚‍♀️" data-label="Fée ♀">🧚‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐲" data-label="Dragon vert">🐲</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦋" data-label="Papillon">🦋</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦕" data-label="Dino">🦕</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦖" data-label="T-Rex">🦖</div>
+      </div>
+
+      <div class="cat-label cat-mechant">😈 Méchants</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🧟" data-label="Zombie">🧟</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👹" data-label="Ogre">👹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👺" data-label="Gobelin">👺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="😈" data-label="Démon">😈</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💀" data-label="Squelette">💀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦇" data-label="Chauve-souris">🦇</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦹" data-label="Vilain">🦹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐍" data-label="Serpent">🐍</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕷️" data-label="Araignée">🕷️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦂" data-label="Scorpion">🦂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏴‍☠️" data-label="Pirate">🏴‍☠️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐺" data-label="Loup">🐺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="☠️" data-label="Crâne">☠️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤡" data-label="Clown">🤡</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👿" data-label="Diable">👿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎃" data-label="Citrouille">🎃</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦈" data-label="Requin">🦈</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐊" data-label="Crocodile">🐊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧟‍♂️" data-label="Zombie ♂">🧟‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧟‍♀️" data-label="Zombie ♀">🧟‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦹‍♂️" data-label="Vilain ♂">🦹‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦹‍♀️" data-label="Vilaine ♀">🦹‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧛‍♂️" data-label="Vampire ♂">🧛‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧛‍♀️" data-label="Vampire ♀">🧛‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💣" data-label="Bombe">💣</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚡" data-label="Éclair">⚡</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌪️" data-label="Tornade">🌪️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧜‍♂️" data-label="Triton">🧜‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌑" data-label="Ombre">🌑</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐉" data-label="Dragon mal.">🐉</div>
+      </div>
+
+      <div class="cat-label cat-gentil">🦸 Gentils</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🦸" data-label="Héros">🦸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👸" data-label="Princesse">👸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤴" data-label="Prince">🤴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤺" data-label="Chevalier">🤺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦸‍♂️" data-label="Héros ♂">🦸‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦸‍♀️" data-label="Héroïne">🦸‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👨‍🚒" data-label="Pompier">👨‍🚒</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👩‍⚕️" data-label="Docteure">👩‍⚕️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👮" data-label="Policier">👮</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💂" data-label="Garde">💂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🚀" data-label="Astronaute">🧑‍🚀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🔬" data-label="Scientifique">🧑‍🔬</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🍳" data-label="Cuisinier">🧑‍🍳</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕵️" data-label="Détective">🕵️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧙" data-label="Sage">🧙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👱" data-label="Blond">👱</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎖️" data-label="Médaillé">🎖️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏅" data-label="Champion">🏅</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤝" data-label="Ami">🤝</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👼" data-label="Ange ♀">👼</div>
+      </div>
+
+      <div class="cat-label cat-artiste">🎭 Artistes</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🎭" data-label="Acteur">🎭</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💃" data-label="Danseuse">💃</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕺" data-label="Danseur">🕺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎤" data-label="Chanteur">🎤</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👨‍🎨" data-label="Artiste ♂">👨‍🎨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👩‍🎨" data-label="Artiste ♀">👩‍🎨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎪" data-label="Acrobate">🎪</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎬" data-label="Cinéaste">🎬</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎸" data-label="Musicien">🎸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🥁" data-label="Batteur">🥁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪗" data-label="Accordéon">🪗</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎙️" data-label="Présentateur">🎙️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="📸" data-label="Photographe">📸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🖌️" data-label="Peintre">🖌️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎻" data-label="Violoniste">🎻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎺" data-label="Trompettiste">🎺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎹" data-label="Pianiste">🎹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤸" data-label="Gymnaste">🤸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎯" data-label="Tireur">🎯</div>
+        <div class="sidebar-item" draggable="true" data-emoji="✏️" data-label="Écrivain">✏️</div>
+      </div>
+
+      <div class="cat-label cat-aventurier">🏃 Aventuriers</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🥷" data-label="Ninja">🥷</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤠" data-label="Cow-boy">🤠</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👩‍🚀" data-label="Astronaute">👩‍🚀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏃" data-label="Coureur">🏃</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧗" data-label="Grimpeur">🧗</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏊" data-label="Nageur">🏊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🚴" data-label="Cycliste">🚴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⛷️" data-label="Skieur">⛷️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏋️" data-label="Haltérophile">🏋️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤼" data-label="Lutteur">🤼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏄" data-label="Surfeur">🏄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤿" data-label="Plongeur">🤿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪂" data-label="Parachutiste">🪂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏇" data-label="Cavalier">🏇</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🚵" data-label="VTTiste">🚵</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤾" data-label="Sportif">🤾</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🥊" data-label="Boxeur">🥊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧘" data-label="Méditant">🧘</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗺️" data-label="Explorateur">🗺️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏕️" data-label="Campeur">🏕️</div>
+      </div>
+
+      <div class="cat-label cat-age">👥 Âges</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="👶" data-label="Bébé">👶</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👧" data-label="Petite fille">👧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👦" data-label="Petit garçon">👦</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👩" data-label="Femme">👩</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👨" data-label="Homme">👨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👵" data-label="Grand-mère">👵</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👴" data-label="Grand-père">👴</div>
+      </div>
+
+      <div class="cat-label cat-special">✨ Spéciaux</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="👽" data-label="Alien">👽</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤖" data-label="Robot">🤖</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👻" data-label="Fantôme">👻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧸" data-label="Nounours">🧸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤦" data-label="Surpris">🤦</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🤷" data-label="Indécis">🤷</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍💻" data-label="Codeur">🧑‍💻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🌾" data-label="Fermier">🧑‍🌾</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🎓" data-label="Étudiant">🧑‍🎓</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍✈️" data-label="Pilote">🧑‍✈️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🔧" data-label="Mécanicien">🧑‍🔧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧑‍🚂" data-label="Conducteur">🧑‍🚂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧜‍♀️" data-label="Sirène ♀">🧜‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧞‍♂️" data-label="Génie ♂">🧞‍♂️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧞‍♀️" data-label="Génie ♀">🧞‍♀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦩" data-label="Flamant">🦩</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌀" data-label="Mystère">🌀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🙆" data-label="Pensif">🙆</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧖" data-label="Relaxé">🧖</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🫶" data-label="Amour">🫶</div>
+      </div>
+
+      <div class="cat-label cat-animaux">🐾 Animaux</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🦁" data-label="Lion">🦁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐯" data-label="Tigre">🐯</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐻" data-label="Ours">🐻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦊" data-label="Renard">🦊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦅" data-label="Aigle">🦅</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐙" data-label="Poulpe">🐙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦀" data-label="Crabe">🦀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐘" data-label="Éléphant">🐘</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦒" data-label="Girafe">🦒</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦓" data-label="Zèbre">🦓</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐬" data-label="Dauphin">🐬</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐧" data-label="Pingouin">🐧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦜" data-label="Perroquet">🦜</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐢" data-label="Tortue">🐢</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐸" data-label="Grenouille">🐸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦔" data-label="Hérisson">🦔</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐨" data-label="Koala">🐨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐼" data-label="Panda">🐼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦘" data-label="Kangourou">🦘</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐇" data-label="Lapin">🐇</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐴" data-label="Cheval">🐴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐮" data-label="Vache">🐮</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐷" data-label="Cochon">🐷</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐔" data-label="Poulet">🐔</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦆" data-label="Canard">🦆</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐝" data-label="Abeille">🐝</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦋" data-label="Papillon">🦋</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐠" data-label="Poisson">🐠</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🦭" data-label="Phoque">🦭</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐺" data-label="Loup">🐺</div>
       </div>
     </div>
 
-    <!-- Personnages méchants -->
-    <div class="section-mechants">
-      <h2>😈 Très Méchants</h2>
+    <div class="sidebar-tab-content" id="tab-objets">
+
+      <div class="cat-label cat-armes">⚔️ Armes</div>
       <div class="element-grid">
-        <div class="sidebar-item" draggable="true" data-emoji="🧟" title="Zombie">🧟</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧛" title="Vampire">🧛</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👹" title="Ogre">👹</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👺" title="Gobelin">👺</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦹" title="Vilain">🦹</div>
-        <div class="sidebar-item" draggable="true" data-emoji="😈" title="Démon">😈</div>
-        <div class="sidebar-item" draggable="true" data-emoji="💀" title="Squelette">💀</div>
-        <div class="sidebar-item" draggable="true" data-emoji="👻" title="Fantôme">👻</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐍" title="Serpent">🐍</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🕷️" title="Araignée">🕷️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦂" title="Scorpion">🦂</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐲" title="Dragon maléfique">🐲</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏴‍☠️" title="Pirate">🏴‍☠️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🐺" title="Loup">🐺</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🦇" title="Chauve-souris">🦇</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚔️" data-label="Épée">⚔️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗡️" data-label="Dague">🗡️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏹" data-label="Arc">🏹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🛡️" data-label="Bouclier">🛡️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪖" data-label="Casque">🪖</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💣" data-label="Bombe">💣</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪃" data-label="Boomerang">🪃</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔱" data-label="Trident">🔱</div>
+      </div>
+
+      <div class="cat-label cat-magie">🪄 Magie</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🪄" data-label="Baguette">🪄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔮" data-label="Boule cristal">🔮</div>
+        <div class="sidebar-item" draggable="true" data-emoji="📜" data-label="Parchemin">📜</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧪" data-label="Potion">🧪</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚗️" data-label="Alambic">⚗️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔑" data-label="Clé magique">🔑</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧿" data-label="Amulette">🧿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💫" data-label="Étincelle">💫</div>
+      </div>
+
+      <div class="cat-label cat-tresor">💎 Trésor</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="💎" data-label="Diamant">💎</div>
+        <div class="sidebar-item" draggable="true" data-emoji="👑" data-label="Couronne">👑</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪙" data-label="Pièce d'or">🪙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💰" data-label="Trésor">💰</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏆" data-label="Trophée">🏆</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🥇" data-label="Médaille or">🥇</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💍" data-label="Anneau">💍</div>
+        <div class="sidebar-item" draggable="true" data-emoji="📦" data-label="Coffre">📦</div>
+      </div>
+
+      <div class="cat-label cat-musique">🎵 Musique</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🎸" data-label="Guitare">🎸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎹" data-label="Piano">🎹</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎺" data-label="Trompette">🎺</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎻" data-label="Violon">🎻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🥁" data-label="Batterie">🥁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪗" data-label="Accordéon">🪗</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎷" data-label="Saxophone">🎷</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎵" data-label="Note">🎵</div>
+      </div>
+
+      <div class="cat-label cat-vehicules">🚗 Véhicules</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🚗" data-label="Voiture">🚗</div>
+        <div class="sidebar-item" draggable="true" data-emoji="✈️" data-label="Avion">✈️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🚂" data-label="Train">🚂</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⛵" data-label="Bateau">⛵</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🚀" data-label="Fusée">🚀</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏎️" data-label="Voiture course">🏎️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🚁" data-label="Hélicoptère">🚁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🛸" data-label="OVNI">🛸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🛶" data-label="Barque">🛶</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🐎" data-label="Monture">🐎</div>
+      </div>
+
+      <div class="cat-label cat-nourriture">🍕 Nourriture</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🍕" data-label="Pizza">🍕</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍰" data-label="Gâteau">🍰</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍪" data-label="Biscuit">🍪</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍷" data-label="Vin magique">🍷</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍎" data-label="Pomme">🍎</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍫" data-label="Chocolat">🍫</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍬" data-label="Bonbon">🍬</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🥧" data-label="Tarte">🥧</div>
+      </div>
+
+      <div class="cat-label cat-divers">🎁 Divers</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🎒" data-label="Sac">🎒</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕯️" data-label="Bougie">🕯️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎁" data-label="Cadeau">🎁</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧸" data-label="Peluche">🧸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="📚" data-label="Livres">📚</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔦" data-label="Lampe">🔦</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧲" data-label="Aimant">🧲</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🨤" data-label="Piège">🨤</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔒" data-label="Cadenas">🔒</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪞" data-label="Miroir">🪞</div>
       </div>
     </div>
 
-    <!-- Objets -->
-    <div class="section-objets">
-      <h2>🏠 Objets</h2>
+    <div class="sidebar-tab-content" id="tab-decor">
+
+      <div class="cat-label cat-batiments">🏰 Bâtiments</div>
       <div class="element-grid">
-        <div class="sidebar-item" draggable="true" data-emoji="🏠" title="Maison">🏠</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏰" title="Château">🏰</div>
-        <div class="sidebar-item" draggable="true" data-emoji="⚔️" title="Épée">⚔️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪄" title="Baguette">🪄</div>
-        <div class="sidebar-item" draggable="true" data-emoji="💎" title="Trésor">💎</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🎒" title="Sac">🎒</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🕯️" title="Bougie">🕯️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🗺️" title="Carte">🗺️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🍎" title="Pomme">🍎</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🔑" title="Clé">🔑</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧪" title="Potion">🧪</div>
-        <div class="sidebar-item" draggable="true" data-emoji="📜" title="Parchemin">📜</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏹" title="Arc">🏹</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🛡️" title="Bouclier">🛡️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🔮" title="Boule de cristal">🔮</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪙" title="Pièce d'or">🪙</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🎁" title="Cadeau">🎁</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧸" title="Nounours">🧸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🎭" title="Masque">🎭</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪖" title="Casque">🪖</div>
-        <div class="sidebar-item" draggable="true" data-emoji="💣" title="Bombe">💣</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪤" title="Piège">🪤</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧿" title="Amulette">🧿</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏆" title="Trophée">🏆</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏰" data-label="Château">🏰</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏚️" data-label="Maison hantée">🏚️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⛪" data-label="Église">⛪</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗼" data-label="Tour">🗼</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏯" data-label="Château fort">🏯</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏛️" data-label="Temple">🏛️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⛩️" data-label="Sanctuaire">⛩️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏠" data-label="Maison">🏠</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🕌" data-label="Mosquée">🕌</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗽" data-label="Statue">🗽</div>
+      </div>
+
+      <div class="cat-label cat-paysages">🏔️ Paysages</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🌋" data-label="Volcan">🌋</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⛰️" data-label="Montagne">⛰️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏝️" data-label="Île">🏝️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌊" data-label="Vague">🌊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏔️" data-label="Sommet">🏔️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏜️" data-label="Désert">🏜️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌉" data-label="Pont">🌉</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🪨" data-label="Rocher">🪨</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🏞️" data-label="Lac">🏞️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🗻" data-label="Mont Fuji">🗻</div>
+      </div>
+
+      <div class="cat-label cat-nature">🌲 Nature</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🌲" data-label="Sapin">🌲</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌳" data-label="Arbre">🌳</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌸" data-label="Fleur rose">🌸</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌻" data-label="Tournesol">🌻</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌿" data-label="Plantes">🌿</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍄" data-label="Champignon">🍄</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌵" data-label="Cactus">🌵</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🎋" data-label="Bambou">🎋</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌾" data-label="Blé">🌾</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌱" data-label="Pousse">🌱</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌴" data-label="Palmier">🌴</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🍀" data-label="Trèfle">🍀</div>
+      </div>
+
+      <div class="cat-label cat-ciel">🌙 Ciel</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="🌙" data-label="Lune">🌙</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⭐" data-label="Étoile">⭐</div>
+        <div class="sidebar-item" draggable="true" data-emoji="☀️" data-label="Soleil">☀️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌈" data-label="Arc-en-ciel">🌈</div>
+        <div class="sidebar-item" draggable="true" data-emoji="☁️" data-label="Nuage">☁️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌟" data-label="Étoile filante">🌟</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💫" data-label="Étincelle">💫</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌤️" data-label="Ciel nuageux">🌤️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌛" data-label="Croissant">🌛</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌠" data-label="Météore">🌠</div>
+      </div>
+
+      <div class="cat-label cat-meteo">⛈️ Météo</div>
+      <div class="element-grid">
+        <div class="sidebar-item" draggable="true" data-emoji="⛈️" data-label="Orage">⛈️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="❄️" data-label="Flocon">❄️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🔥" data-label="Feu">🔥</div>
+        <div class="sidebar-item" draggable="true" data-emoji="💧" data-label="Eau">💧</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌪️" data-label="Tornade">🌪️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌫️" data-label="Brouillard">🌫️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="⚡" data-label="Éclair">⚡</div>
+        <div class="sidebar-item" draggable="true" data-emoji="☃️" data-label="Bonhomme neige">☃️</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🧊" data-label="Glace">🧊</div>
+        <div class="sidebar-item" draggable="true" data-emoji="🌧️" data-label="Pluie">🌧️</div>
       </div>
     </div>
 
-    <!-- Décors -->
-    <div class="section-decor">
-      <h2>🌲 Décors</h2>
-      <div class="element-grid">
-        <div class="sidebar-item" draggable="true" data-emoji="🌲" title="Arbre">🌲</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌊" title="Mer">🌊</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏔️" title="Montagne">🏔️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌸" title="Fleur">🌸</div>
-        <div class="sidebar-item" draggable="true" data-emoji="☁️" title="Nuage">☁️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌞" title="Soleil">🌞</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌙" title="Lune">🌙</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌈" title="Arc-en-ciel">🌈</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🔥" title="Feu">🔥</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌋" title="Volcan">🌋</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏜️" title="Désert">🏜️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌴" title="Palmier">🌴</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🕸️" title="Toile d'araignée">🕸️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪨" title="Rocher">🪨</div>
-        <div class="sidebar-item" draggable="true" data-emoji="⚡" title="Éclair">⚡</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌪️" title="Tornade">🌪️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🏚️" title="Maison hantée">🏚️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🗼" title="Tour">🗼</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌿" title="Plantes">🌿</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🪦" title="Tombe">🪦</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌑" title="Lune noire">🌑</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌫️" title="Brouillard">🌫️</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🧊" title="Glace">🧊</div>
-        <div class="sidebar-item" draggable="true" data-emoji="🌉" title="Pont">🌉</div>
-      </div>
-    </div>
-
-    <!-- Texte -->
-    <div class="section-texte">
-      <h2>✏️ Texte</h2>
-
-      <!-- Phrases pré-faites -->
-      <div class="phrases-grid" id="phrases">
+    <div id="text-section">
+      <h3>✏️ Texte</h3>
+      <div class="phrases-grid">
         <button class="phrase-btn" data-phrase="Il était une fois…">Il était une fois…</button>
         <button class="phrase-btn" data-phrase="Un jour…">Un jour…</button>
         <button class="phrase-btn" data-phrase="Soudain…">Soudain…</button>
-        <button class="phrase-btn" data-phrase="Ensuite…">Ensuite…</button>
-        <button class="phrase-btn" data-phrase="Grâce à…">Grâce à…</button>
+        <button class="phrase-btn" data-phrase="Alors…">Alors…</button>
+        <button class="phrase-btn" data-phrase="Mais hélas…">Mais hélas…</button>
         <button class="phrase-btn" data-phrase="Finalement…">Finalement…</button>
-        <button class="phrase-btn" data-phrase="Depuis ce jour…">Depuis ce jour…</button>
-        <button class="phrase-btn" data-phrase="Le méchant dit :">Le méchant dit :</button>
-        <button class="phrase-btn" data-phrase="Le héros cria :">Le héros cria :</button>
-        <button class="phrase-btn" data-phrase="Heureusement…">Heureusement…</button>
-        <button class="phrase-btn" data-phrase="À l'aide !">À l'aide !</button>
-        <button class="phrase-btn" data-phrase="Jamais je ne…">Jamais je ne…</button>
+        <button class="phrase-btn" data-phrase="Et ils vécurent heureux !">Et ils vécurent heureux !</button>
       </div>
-
-      <!-- Champ texte libre -->
-      <textarea id="text-input" rows="2" placeholder="Écris ton texte…"></textarea>
-      <button id="btn-add-text">➕ Ajouter le texte</button>
+      <textarea id="text-input" rows="2" placeholder="Écris ici…" maxlength="120" aria-label="Écris ton texte ici"></textarea>
+      <button id="btn-add-text">➕ Ajouter</button>
     </div>
-
   </aside>
 
-  <!-- ── Zone scène + boutons ─────────────────────────── -->
   <div id="scene-wrapper">
-    <!-- La scène est FIXE ; les éléments bougent à l'intérieur -->
-    <div id="scene" aria-label="Scène de l'histoire"></div>
-
+    <div id="scene" aria-label="Scène de l’histoire"></div>
     <div id="scene-actions">
-      <button class="action-btn danger" id="btn-clear">🗑️ Tout effacer</button>
+      <button class="action-btn danger" id="btn-clear">🗑️ Effacer la page</button>
     </div>
   </div>
-
 </main>
 
 <script>
-/* ══════════════════════════════════════════════════════════
+
+/* ==========================================================
    INVENTE TON HISTOIRE — JavaScript
-   ══════════════════════════════════════════════════════════ */
+   ========================================================== */
 
 const scene = document.getElementById('scene');
+const MIN_SIZE = 24, MAX_SIZE = 120, DEF_SIZE = 48;
+const STORE_KEY = 'histoiresEnfants_v2';
 
-// Constantes de positionnement
-const EMOJI_DROP_OFFSET     = 20;  // décalage centrage de l'emoji sous le curseur
-const TEXT_BLOCK_MIN_OFFSET = 40;  // position min d'un nouveau bloc texte
-const TEXT_BLOCK_POS_RANGE  = 200; // amplitude de la position aléatoire
-const DEFAULT_ELEMENT_SIZE  = 48;  // taille de repli (px) quand offsetWidth/Height vaut 0
+let currentPage = 0, pages = [[]], zCounter = 10;
 
-/* ── 1. Drag depuis la barre latérale ─────────────────── */
+/* -- Onglets sidebar ---------------------------------------- */
+document.querySelectorAll('.sidebar-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sidebar-tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
 
-// Mémorise quel emoji est en cours de glisser
-let draggedEmoji = null;
+/* -- Navigation pages --------------------------------------- */
+const pageNav = document.getElementById('page-nav');
+const btnAddPage = document.getElementById('btn-add-page');
 
+function renderPageNav() {
+  document.querySelectorAll('.page-tab-wrapper').forEach(w => w.remove());
+  pages.forEach((_, i) => {
+    const w = document.createElement('div');
+    w.className = 'page-tab-wrapper';
+    const tab = document.createElement('button');
+    tab.className = 'page-tab' + (i === currentPage ? ' active' : '');
+    tab.textContent = '📄 ' + (i + 1);
+    tab.addEventListener('click', () => switchPage(i));
+    w.appendChild(tab);
+    if (pages.length > 1) {
+      const del = document.createElement('button');
+      del.className = 'page-del-btn'; del.textContent = '\u2715';
+      del.title = 'Supprimer la page ' + (i + 1);
+      del.addEventListener('click', () => deletePage(i));
+      w.appendChild(del);
+    }
+    pageNav.insertBefore(w, btnAddPage);
+  });
+  btnAddPage.disabled = pages.length >= 12;
+}
+
+function switchPage(i) { saveCurrentPage(); currentPage = i; loadPage(i); renderPageNav(); }
+function deletePage(i) {
+  if (pages.length <= 1) return;
+  if (!confirm('Supprimer la page ' + (i + 1) + '\u00a0?')) return;
+  pages.splice(i, 1);
+  if (currentPage >= pages.length) currentPage = pages.length - 1;
+  loadPage(currentPage); renderPageNav(); persistAll();
+}
+btnAddPage.addEventListener('click', () => {
+  if (pages.length >= 12) return;
+  saveCurrentPage(); pages.push([]); currentPage = pages.length - 1;
+  loadPage(currentPage); renderPageNav(); persistAll();
+});
+
+/* -- Sérialisation ------------------------------------------ */
+function saveCurrentPage() {
+  pages[currentPage] = [];
+  scene.querySelectorAll('.scene-element, .text-block').forEach(el => {
+    const d = {
+      type: el.classList.contains('text-block') ? 'text' : 'emoji',
+      x: parseInt(el.style.left) || 0,
+      y: parseInt(el.style.top)  || 0,
+      locked: el.classList.contains('locked')
+    };
+    if (d.type === 'emoji') {
+      d.emoji = el.dataset.emoji; d.label = el.dataset.label;
+      d.size  = parseInt(el.dataset.size) || DEF_SIZE;
+    } else {
+      d.text = el.dataset.text;
+    }
+    pages[currentPage].push(d);
+  });
+}
+function loadPage(i) {
+  scene.querySelectorAll('.scene-element, .text-block').forEach(el => el.remove());
+  zCounter = 10;
+  (pages[i] || []).forEach(d => {
+    if (d.type === 'emoji') createEmojiElement(d.emoji, d.label, d.x, d.y, d.size, d.locked);
+    else                     createTextBlock(d.text, d.x, d.y, d.locked);
+  });
+}
+function persistAll() {
+  try {
+    sessionStorage.setItem(STORE_KEY + '_pages',   JSON.stringify(pages));
+    sessionStorage.setItem(STORE_KEY + '_current', String(currentPage));
+  } catch(e) {}
+}
+function autosave() { saveCurrentPage(); persistAll(); }
+
+/* -- Drag sidebar → scène ---------------------------------- */
+let dragEmoji = null, dragLabel = null;
 document.querySelectorAll('.sidebar-item').forEach(item => {
   item.addEventListener('dragstart', e => {
-    draggedEmoji = item.dataset.emoji;
-    e.dataTransfer.effectAllowed = 'copy';
-    // Petite animation de départ
-    item.style.opacity = '.5';
+    dragEmoji = item.dataset.emoji; dragLabel = item.dataset.label || '';
+    e.dataTransfer.effectAllowed = 'copy'; item.style.opacity = '.5';
   });
   item.addEventListener('dragend', () => {
-    item.style.opacity = '';
-    draggedEmoji = null;
+    item.style.opacity = ''; dragEmoji = dragLabel = null;
   });
 });
-
-// La scène accepte les dépôts
 scene.addEventListener('dragover', e => {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'copy';
+  e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
 });
-
 scene.addEventListener('drop', e => {
-  e.preventDefault();
-  if (!draggedEmoji) return;
-
-  const rect = scene.getBoundingClientRect();
-  // Position relative à la scène
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  createEmojiElement(draggedEmoji, x - EMOJI_DROP_OFFSET, y - EMOJI_DROP_OFFSET);
+  e.preventDefault(); if (!dragEmoji) return;
+  const r = scene.getBoundingClientRect();
+  createEmojiElement(dragEmoji, dragLabel, e.clientX - r.left - DEF_SIZE / 2, e.clientY - r.top - DEF_SIZE / 2);
+  autosave();
 });
 
-/* ── 2. Création d'un élément emoji sur la scène ──────── */
-function createEmojiElement(emoji, x, y) {
+/* -- Création emoji ----------------------------------------- */
+function createEmojiElement(emoji, label, x, y, size, locked) {
+  size = size || DEF_SIZE;
   const el = document.createElement('div');
   el.className = 'scene-element';
-  el.textContent = emoji;
+  el.dataset.emoji = emoji; el.dataset.label = label || ''; el.dataset.size = size;
+  el.style.zIndex = nextZIndex();
+  if (locked) el.classList.add('locked');
 
-  // Bouton supprimer
-  const del = document.createElement('button');
-  del.className = 'delete-btn';
-  del.textContent = '✕';
-  del.title = 'Supprimer';
-  del.addEventListener('click', e => {
-    e.stopPropagation();
-    el.remove();
-  });
-  el.appendChild(del);
+  const span = document.createElement('span');
+  span.className = 'elem-emoji'; span.textContent = emoji;
+  span.style.fontSize = size + 'px'; el.appendChild(span);
 
-  // Position initiale (clampée dans la scène)
-  positionElement(el, x, y);
-  scene.appendChild(el);
+  const lbl = document.createElement('span');
+  lbl.className = 'elem-label'; lbl.textContent = label || ''; el.appendChild(lbl);
 
-  // Rendre déplaçable
-  makeDraggable(el);
+  appendDeleteBtn(el); appendLockBtn(el);
 
-  // Animation d'apparition
+  const handle = document.createElement('div');
+  handle.className = 'resize-handle'; handle.title = 'Redimensionner';
+  makeResizable(el, handle, span); el.appendChild(handle);
+
+  positionElement(el, x, y); scene.appendChild(el); makeDraggable(el);
+  el.addEventListener('mousedown', () => selectEl(el));
   el.animate([
     { transform: 'scale(0) rotate(-30deg)', opacity: 0 },
     { transform: 'scale(1.15) rotate(5deg)', opacity: 1 },
-    { transform: 'scale(1) rotate(0deg)',   opacity: 1 }
-  ], { duration: 300, easing: 'ease-out', fill: 'forwards' });
-}
-
-/* ── 3. Blocs de texte ────────────────────────────────── */
-const textInput   = document.getElementById('text-input');
-const btnAddText  = document.getElementById('btn-add-text');
-
-btnAddText.addEventListener('click', addTextBlock);
-textInput.addEventListener('keydown', e => {
-  // Ctrl+Entrée pour ajouter
-  if (e.key === 'Enter' && e.ctrlKey) addTextBlock();
-});
-
-function addTextBlock() {
-  const txt = textInput.value.trim();
-  if (!txt) return;
-
-  createTextBlock(txt, TEXT_BLOCK_MIN_OFFSET + Math.random() * TEXT_BLOCK_POS_RANGE,
-                      TEXT_BLOCK_MIN_OFFSET + Math.random() * TEXT_BLOCK_POS_RANGE);
-  textInput.value = '';
-  textInput.focus();
-}
-
-function createTextBlock(text, x, y) {
-  const el = document.createElement('div');
-  el.className = 'text-block';
-  el.textContent = text;
-
-  // Bouton supprimer
-  const del = document.createElement('button');
-  del.className = 'delete-btn';
-  del.textContent = '✕';
-  del.title = 'Supprimer';
-  del.addEventListener('click', e => {
-    e.stopPropagation();
-    el.remove();
-  });
-  el.appendChild(del);
-
-  positionElement(el, x, y);
-  scene.appendChild(el);
-  makeDraggable(el);
-
-  // Animation d'apparition
-  el.animate([
-    { transform: 'scale(0) rotate(5deg)', opacity: 0 },
-    { transform: 'scale(1.08) rotate(-2deg)', opacity: 1 },
-    { transform: 'scale(1) rotate(0deg)',  opacity: 1 }
+    { transform: 'scale(1) rotate(0)',      opacity: 1 }
   ], { duration: 280, easing: 'ease-out', fill: 'forwards' });
 }
 
-/* ── 4. Phrases pré-faites ────────────────────────────── */
+/* -- Blocs texte -------------------------------------------- */
+const textInput = document.getElementById('text-input');
+document.getElementById('btn-add-text').addEventListener('click', addText);
+textInput.addEventListener('keydown', e => { if (e.key === 'Enter' && e.ctrlKey) addText(); });
+
+function addText() {
+  const txt = textInput.value.trim(); if (!txt) return;
+  createTextBlock(txt, 40 + Math.random() * 200, 40 + Math.random() * 200);
+  textInput.value = ''; textInput.focus(); autosave();
+}
+function createTextBlock(text, x, y, locked) {
+  const el = document.createElement('div');
+  el.className = 'text-block'; el.dataset.text = text; el.textContent = text;
+  el.style.zIndex = nextZIndex();
+  if (locked) el.classList.add('locked');
+  appendDeleteBtn(el); appendLockBtn(el);
+  positionElement(el, x, y); scene.appendChild(el); makeDraggable(el);
+  el.addEventListener('mousedown', () => selectEl(el));
+  el.animate([
+    { transform: 'scale(0) rotate(5deg)', opacity: 0 },
+    { transform: 'scale(1.08) rotate(-1deg)', opacity: 1 },
+    { transform: 'scale(1) rotate(0)',    opacity: 1 }
+  ], { duration: 250, easing: 'ease-out', fill: 'forwards' });
+}
+
+/* -- Phrases pré-faites ------------------------------------- */
 document.querySelectorAll('.phrase-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    // Remplir le champ texte avec la phrase
-    textInput.value = btn.dataset.phrase + ' ';
-    textInput.focus();
-    // Placer le curseur en fin de texte
-    const len = textInput.value.length;
-    textInput.setSelectionRange(len, len);
+    textInput.value = btn.dataset.phrase + ' '; textInput.focus();
+    const l = textInput.value.length; textInput.setSelectionRange(l, l);
   });
 });
 
-/* ── 5. Drag & drop personnalisé (mousedown/move/up) ──── */
+/* -- Sélection ---------------------------------------------- */
+function selectEl(el) {
+  document.querySelectorAll('.selected').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+scene.addEventListener('mousedown', e => {
+  if (e.target === scene)
+    document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+});
+
+/* -- Boutons supprimer / verrouiller ------------------------ */
+function appendDeleteBtn(el) {
+  const btn = document.createElement('button');
+  btn.className = 'delete-btn'; btn.textContent = '\u2715'; btn.title = 'Supprimer';
+  btn.addEventListener('click', e => { e.stopPropagation(); el.remove(); autosave(); });
+  el.appendChild(btn);
+}
+function appendLockBtn(el) {
+  const btn = document.createElement('button');
+  btn.className = 'lock-btn';
+  btn.textContent = el.classList.contains('locked') ? '🔒' : '🔓';
+  btn.title = 'Verrouiller / déverrouiller';
+  btn.addEventListener('click', e => {
+    e.stopPropagation(); el.classList.toggle('locked');
+    btn.textContent = el.classList.contains('locked') ? '🔒' : '🔓';
+    autosave();
+  });
+  el.appendChild(btn);
+}
+
+/* -- Drag sur la scène -------------------------------------- */
 function makeDraggable(el) {
-  let startX, startY, startLeft, startTop;
-  let isDragging = false;
+  let sX, sY, sL, sT, drag = false;
+  const ctrl = t =>
+    t.classList.contains('delete-btn') ||
+    t.classList.contains('lock-btn')   ||
+    t.classList.contains('resize-handle');
 
-  el.addEventListener('mousedown', onMouseDown);
-  el.addEventListener('touchstart', onTouchStart, { passive: false });
+  el.addEventListener('mousedown', e => {
+    if (ctrl(e.target) || el.classList.contains('locked')) return;
+    e.preventDefault(); begin(e.clientX, e.clientY);
+    document.addEventListener('mousemove', mm); document.addEventListener('mouseup', mu);
+  });
+  el.addEventListener('touchstart', e => {
+    if (ctrl(e.target) || el.classList.contains('locked')) return;
+    e.preventDefault(); begin(e.touches[0].clientX, e.touches[0].clientY);
+    document.addEventListener('touchmove', tm, { passive: false });
+    document.addEventListener('touchend', tu);
+  }, { passive: false });
 
-  /* -- Souris -- */
-  function onMouseDown(e) {
-    if (e.target.classList.contains('delete-btn')) return;
-    e.preventDefault();
-    beginDrag(e.clientX, e.clientY);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+  function begin(cx, cy) {
+    drag = true; el.classList.add('dragging'); el.style.zIndex = nextZIndex();
+    sX = cx; sY = cy;
+    sL = parseInt(el.style.left) || 0; sT = parseInt(el.style.top) || 0;
   }
-
-  function onMouseMove(e) {
-    if (!isDragging) return;
-    moveTo(e.clientX, e.clientY);
-  }
-
-  function onMouseUp() {
-    endDrag();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-  }
-
-  /* -- Tactile -- */
-  function onTouchStart(e) {
-    if (e.target.classList.contains('delete-btn')) return;
-    e.preventDefault();
-    const t = e.touches[0];
-    beginDrag(t.clientX, t.clientY);
-    document.addEventListener('touchmove', onTouchMove, { passive: false });
-    document.addEventListener('touchend', onTouchEnd);
-  }
-
-  function onTouchMove(e) {
-    e.preventDefault();
-    const t = e.touches[0];
-    moveTo(t.clientX, t.clientY);
-  }
-
-  function onTouchEnd() {
-    endDrag();
-    document.removeEventListener('touchmove', onTouchMove);
-    document.removeEventListener('touchend', onTouchEnd);
-  }
-
-  /* -- Logique commune -- */
-  function beginDrag(cx, cy) {
-    isDragging = true;
-    el.classList.add('dragging');
-    // Élever au-dessus des autres éléments
-    el.style.zIndex = nextZIndex();
-
-    const rect = el.getBoundingClientRect();
-    startX    = cx;
-    startY    = cy;
-    startLeft = parseInt(el.style.left, 10) || 0;
-    startTop  = parseInt(el.style.top,  10) || 0;
-  }
-
-  function moveTo(cx, cy) {
-    if (!isDragging) return;
-    const dx = cx - startX;
-    const dy = cy - startY;
-    positionElement(el, startLeft + dx, startTop + dy);
-  }
-
-  function endDrag() {
-    isDragging = false;
-    el.classList.remove('dragging');
-  }
+  const mm = e => { if (drag) positionElement(el, sL + e.clientX - sX, sT + e.clientY - sY); };
+  const mu = () => {
+    drag = false; el.classList.remove('dragging');
+    document.removeEventListener('mousemove', mm); document.removeEventListener('mouseup', mu);
+    autosave();
+  };
+  const tm = e => { e.preventDefault(); if (drag) positionElement(el, sL + e.touches[0].clientX - sX, sT + e.touches[0].clientY - sY); };
+  const tu = () => {
+    drag = false; el.classList.remove('dragging');
+    document.removeEventListener('touchmove', tm); document.removeEventListener('touchend', tu);
+    autosave();
+  };
 }
 
-/* ── 6. Utilitaires ───────────────────────────────────── */
+/* -- Redimensionnement -------------------------------------- */
+function makeResizable(el, handle, span) {
+  let sy, ss;
+  const applySize = cy => {
+    const ns = Math.min(MAX_SIZE, Math.max(MIN_SIZE, ss + (cy - sy)));
+    span.style.fontSize = ns + 'px'; el.dataset.size = ns;
+  };
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    sy = e.clientY; ss = parseInt(span.style.fontSize) || DEF_SIZE;
+    const mm = e2 => applySize(e2.clientY);
+    const mu = () => {
+      document.removeEventListener('mousemove', mm); document.removeEventListener('mouseup', mu);
+      autosave();
+    };
+    document.addEventListener('mousemove', mm); document.addEventListener('mouseup', mu);
+  });
+  handle.addEventListener('touchstart', e => {
+    e.preventDefault(); e.stopPropagation();
+    sy = e.touches[0].clientY; ss = parseInt(span.style.fontSize) || DEF_SIZE;
+    const tm = e2 => { e2.preventDefault(); applySize(e2.touches[0].clientY); };
+    const tu = () => {
+      document.removeEventListener('touchmove', tm); document.removeEventListener('touchend', tu);
+      autosave();
+    };
+    document.addEventListener('touchmove', tm, { passive: false });
+    document.addEventListener('touchend', tu);
+  }, { passive: false });
+}
 
-// Compteur pour l'ordre z des éléments
-let zCounter = 10;
+/* -- Utilitaires -------------------------------------------- */
 function nextZIndex() { return ++zCounter; }
-
-// Place un élément en le gardant dans les limites de la scène
 function positionElement(el, x, y) {
-  const sceneW = scene.offsetWidth;
-  const sceneH = scene.offsetHeight;
-  const elW    = el.offsetWidth  || DEFAULT_ELEMENT_SIZE;
-  const elH    = el.offsetHeight || DEFAULT_ELEMENT_SIZE;
-
-  const clampedX = Math.max(0, Math.min(x, sceneW - elW));
-  const clampedY = Math.max(0, Math.min(y, sceneH - elH));
-
-  el.style.left = clampedX + 'px';
-  el.style.top  = clampedY + 'px';
+  const W = scene.offsetWidth, H = scene.offsetHeight;
+  const w = el.offsetWidth || DEF_SIZE, h = el.offsetHeight || DEF_SIZE;
+  el.style.left = Math.max(0, Math.min(x, W - w)) + 'px';
+  el.style.top  = Math.max(0, Math.min(y, H - h)) + 'px';
 }
 
-/* ── 7. Bouton « Tout effacer » ───────────────────────── */
+/* -- Effacer la page ---------------------------------------- */
 document.getElementById('btn-clear').addEventListener('click', () => {
-  if (confirm('Veux-tu vraiment effacer toute la scène ?')) {
-    // Supprimer tous les éléments sauf le pseudo-texte ::before
+  if (confirm('Effacer tous les \u00e9l\u00e9ments de cette page\u00a0?')) {
     scene.querySelectorAll('.scene-element, .text-block').forEach(el => el.remove());
-    zCounter = 10;
+    zCounter = 10; autosave();
   }
 });
 
-/* ── 8. Session individuelle — prénom de l'enfant ─────── */
-const welcomeModal  = document.getElementById('welcome-modal');
-const nameInput     = document.getElementById('name-input');
-const nameSubmit    = document.getElementById('name-submit');
-const nameDisplay   = document.getElementById('child-name-display');
+/* -- Modal bienvenue ---------------------------------------- */
+const welcomeModal = document.getElementById('welcome-modal');
+const nameInput    = document.getElementById('name-input');
+const nameSubmit   = document.getElementById('name-submit');
+const nameDisplay  = document.getElementById('child-name-display');
 
-function applyChildName(name) {
-  sessionStorage.setItem('childName', name);
-  nameDisplay.textContent = '👤 ' + name;
+function applyChildName(n) {
+  sessionStorage.setItem(STORE_KEY + '_name', n);
+  nameDisplay.textContent = '👤 ' + n;
   welcomeModal.classList.add('hidden');
 }
-
-function initSession() {
-  const savedName = sessionStorage.getItem('childName');
-  if (savedName) {
-    applyChildName(savedName);
-  } else {
-    welcomeModal.classList.remove('hidden');
-    // Focus retardé pour les animations
-    setTimeout(() => nameInput.focus(), 100); // laisser le temps à l'animation popIn de démarrer
-  }
-}
-
 nameSubmit.addEventListener('click', () => {
-  const name = nameInput.value.trim();
-  if (!name) {
-    nameInput.classList.add('error');
-    nameInput.focus();
-    return;
-  }
-  applyChildName(name);
+  const n = nameInput.value.trim();
+  if (!n) { nameInput.classList.add('error'); nameInput.focus(); return; }
+  applyChildName(n);
 });
-
 nameInput.addEventListener('keydown', e => {
   nameInput.classList.remove('error');
   if (e.key === 'Enter') nameSubmit.click();
 });
 
-initSession();
+/* -- Init --------------------------------------------------- */
+function init() {
+  const sn = sessionStorage.getItem(STORE_KEY + '_name');
+  if (sn) applyChildName(sn);
+  else { welcomeModal.classList.remove('hidden'); setTimeout(() => nameInput.focus(), 100); }
+  try {
+    const sp = sessionStorage.getItem(STORE_KEY + '_pages');
+    const sc = sessionStorage.getItem(STORE_KEY + '_current');
+    if (sp) { pages = JSON.parse(sp); currentPage = Math.min(parseInt(sc) || 0, pages.length - 1); }
+  } catch(e) {}
+  renderPageNav(); loadPage(currentPage);
+}
+init();
+
 </script>
 </body>
 </html>
